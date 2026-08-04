@@ -21,6 +21,8 @@ No services are managed by this repository yet.
   links while preserving conflicting files as timestamped backups.
 - Fastfetch displays a once-per-session host dashboard. Its `Alerts` row is
   backed by `scripts/homelab-status.sh`; alert checks are not yet configured.
+- The dashboard separates allocated memory from a pressure-oriented health row
+  containing available capacity and swap usage.
 - Neovim uses a tracked Gruvbox Dark configuration with Lazy, Telescope,
   WhichKey, Lualine, and Gitsigns.
 

@@ -43,6 +43,12 @@
       "keyColor": "blue"
     },
     {
+      "type": "command",
+      "key": "Pressure",
+      "keyColor": "blue",
+      "text": "~/.local/bin/homelab-memory-status"
+    },
+    {
       "type": "disk",
       "key": "Disk",
       "keyColor": "blue",
