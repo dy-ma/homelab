@@ -36,4 +36,10 @@ link_dotfile dotfiles/config/starship.toml .config/starship.toml
 link_dotfile dotfiles/config/fastfetch .config/fastfetch
 link_dotfile scripts/homelab-status.sh .local/bin/homelab-status
 
+git_alias_config="$repo_root/dotfiles/gitconfig"
+if command -v git >/dev/null 2>&1 && ! git config --global --get-all include.path | grep -Fqx "$git_alias_config"; then
+  git config --global --add include.path "$git_alias_config"
+  printf 'Included Git configuration: %s\n' "$git_alias_config"
+fi
+
 printf '%s\n' 'Bootstrap complete. Start a new shell or run: source ~/.zshrc'

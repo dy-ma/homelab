@@ -46,3 +46,8 @@ operation.
 Interactive terminal sessions display a Fastfetch dashboard once, including
 basic host diagnostics and the output of `scripts/homelab-status.sh`. That
 script is the extension point for future service alerts and health summaries.
+
+Portable shell helpers include `cl` (change directory and list), `ll` (long
+listing), and `la` (long listing including hidden files). The tracked Git config
+adds `git s`, `git aa`, and `git cm "message"` aliases while leaving the user's
+name, email, credentials, and other global Git settings outside the repository.

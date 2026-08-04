@@ -10,6 +10,14 @@ HISTSIZE=10000
 SAVEHIST=10000
 setopt APPEND_HISTORY SHARE_HISTORY HIST_IGNORE_DUPS HIST_REDUCE_BLANKS
 
+# Portable navigation and listing helpers.
+alias ll='ls -lhG'
+alias la='ls -lahG'
+
+cl() {
+  builtin cd -- "$@" && command ls -G
+}
+
 # Native Zsh completion.
 autoload -Uz compinit
 compinit
