@@ -33,3 +33,10 @@ if command -v brew >/dev/null 2>&1; then
 
   unset _homelab_brew_prefix
 fi
+
+# Show the homelab dashboard once per top-level interactive session. Child
+# shells inherit the guard and do not redraw it.
+if [[ -t 1 && "$TERM" != dumb && -z "$HOMELAB_FETCH_SHOWN" ]] && command -v fastfetch >/dev/null 2>&1; then
+  export HOMELAB_FETCH_SHOWN=1
+  fastfetch
+fi

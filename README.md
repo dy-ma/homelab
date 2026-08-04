@@ -39,4 +39,10 @@ After installing Homebrew, run:
 
 The script installs the portable shell packages from `Brewfile`, backs up any
 conflicting dotfiles, and links the tracked Zsh and Starship configuration into
-the current user's home directory. It is safe to run again.
+the current user's home directory. It is safe to run again. Bootstrap uses
+`brew bundle --no-upgrade`; upgrades are a separate, deliberate maintenance
+operation.
+
+Interactive terminal sessions display a Fastfetch dashboard once, including
+basic host diagnostics and the output of `scripts/homelab-status.sh`. That
+script is the extension point for future service alerts and health summaries.

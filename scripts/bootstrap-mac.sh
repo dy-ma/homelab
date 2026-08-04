@@ -5,7 +5,7 @@ repo_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 backup_stamp=$(date +%Y%m%d-%H%M%S)
 
 link_dotfile() {
-  source_path="$repo_root/dotfiles/$1"
+  source_path="$repo_root/$1"
   target_path="$HOME/$2"
 
   mkdir -p "$(dirname -- "$target_path")"
@@ -26,12 +26,14 @@ link_dotfile() {
 }
 
 if command -v brew >/dev/null 2>&1; then
-  brew bundle --file="$repo_root/Brewfile"
+  brew bundle --no-upgrade --file="$repo_root/Brewfile"
 else
   printf '%s\n' 'Homebrew not found; install it and rerun this script to install packages.' >&2
 fi
 
-link_dotfile zshrc .zshrc
-link_dotfile config/starship.toml .config/starship.toml
+link_dotfile dotfiles/zshrc .zshrc
+link_dotfile dotfiles/config/starship.toml .config/starship.toml
+link_dotfile dotfiles/config/fastfetch .config/fastfetch
+link_dotfile scripts/homelab-status.sh .local/bin/homelab-status
 
 printf '%s\n' 'Bootstrap complete. Start a new shell or run: source ~/.zshrc'

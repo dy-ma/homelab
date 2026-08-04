@@ -1,3 +1,4 @@
+brew "fastfetch"
 brew "gh"
 brew "neovim"
 brew "starship"
