@@ -34,6 +34,7 @@ fi
 link_dotfile dotfiles/zshrc .zshrc
 link_dotfile dotfiles/config/starship.toml .config/starship.toml
 link_dotfile dotfiles/config/fastfetch .config/fastfetch
+link_dotfile dotfiles/config/nvim .config/nvim
 link_dotfile scripts/homelab-status.sh .local/bin/homelab-status
 
 git_alias_config="$repo_root/dotfiles/gitconfig"

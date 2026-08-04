@@ -11,11 +11,24 @@ SAVEHIST=10000
 setopt APPEND_HISTORY SHARE_HISTORY HIST_IGNORE_DUPS HIST_REDUCE_BLANKS
 
 # Portable navigation and listing helpers.
-alias ll='ls -lhG'
-alias la='ls -lahG'
+export CLICOLOR=1
+export LSCOLORS='GxFxCxDxCxExExBxBxDxDx'
+
+alias ls='ls -G'
+alias ll='ls -lh'
+alias la='ls -lah'
 
 cl() {
   builtin cd -- "$@" && command ls -G
+}
+
+# Install a Homebrew package and record it in the homelab Brewfile. Pass
+# --cask for graphical applications.
+brewadd() {
+  brew install "$@" && brew bundle add \
+    --file="${HOMELAB_REPO:-$HOME/homelab}/Brewfile" \
+    --no-describe \
+    "$@"
 }
 
 # Native Zsh completion.

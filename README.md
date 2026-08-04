@@ -51,3 +51,10 @@ Portable shell helpers include `cl` (change directory and list), `ll` (long
 listing), and `la` (long listing including hidden files). The tracked Git config
 adds `git s`, `git aa`, and `git cm "message"` aliases while leaving the user's
 name, email, credentials, and other global Git settings outside the repository.
+
+Use `brewadd PACKAGE` (or `brewadd --cask APPLICATION`) to install software and
+record it in this repository's Brewfile in one operation.
+
+The portable Neovim configuration uses Gruvbox Dark with Telescope, WhichKey,
+Lualine, and Gitsigns. See `dotfiles/config/nvim/README.md` for the short keymap
+reference.
