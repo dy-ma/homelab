@@ -1,0 +1,7 @@
+brew "gh"
+brew "neovim"
+brew "starship"
+brew "zsh-autosuggestions"
+brew "zsh-syntax-highlighting"
+
+cask "orbstack"

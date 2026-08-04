@@ -1,0 +1,30 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.mobileconfig
+secrets/
+
+# Runtime state, databases, logs, and generated reports
+data/
+state/
+logs/
+*.log
+reports/history/*
+!reports/history/.gitkeep
+
+# macOS and editors
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Backups and media must not enter Git
+backups/
+media/
+downloads/
+*.bak
+

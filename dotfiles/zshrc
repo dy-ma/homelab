@@ -1,0 +1,35 @@
+# When connected remotely, print GitHub CLI browser URLs instead of opening
+# them in the remote Mac's graphical session.
+if [[ -n "$SSH_CONNECTION" ]]; then
+  export GH_BROWSER=echo
+fi
+
+# Interactive history shared across terminal sessions.
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
+setopt APPEND_HISTORY SHARE_HISTORY HIST_IGNORE_DUPS HIST_REDUCE_BLANKS
+
+# Native Zsh completion.
+autoload -Uz compinit
+compinit
+
+# Prompt and interactive assistance installed through Homebrew.
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
+
+if command -v brew >/dev/null 2>&1; then
+  _homelab_brew_prefix="$(brew --prefix)"
+
+  if [[ -r "$_homelab_brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]]; then
+    source "$_homelab_brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  fi
+
+  # Syntax highlighting must be sourced after other interactive shell plugins.
+  if [[ -r "$_homelab_brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
+    source "$_homelab_brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  fi
+
+  unset _homelab_brew_prefix
+fi
