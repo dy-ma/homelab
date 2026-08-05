@@ -1,0 +1,4 @@
+# Native packages and applications installed because dylmini is a homelab host.
+#
+# Keep portable terminal and development tools in ../../Brewfile. Add native
+# server software here when its installation method and lifecycle are settled.

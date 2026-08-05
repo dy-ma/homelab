@@ -24,7 +24,6 @@ reports/history/*
 
 # Backups and media must not enter Git
 backups/
-media/
-downloads/
+/media/
+/downloads/
 *.bak
-

@@ -5,9 +5,9 @@ definitions, launchd jobs, inventory, runbooks, and machine-generated reports.
 
 ## Layout
 
-- `compose/` — Docker Compose applications and checked-in examples
-- `launchd/` — macOS launch agents and daemons
-- `config/` — non-secret application configuration
+- `Brewfile` — portable development and terminal tools
+- `hosts/dylmini/` — native packages and macOS configuration for this server
+- `services/` — independently deployable service stacks and their configuration
 - `scripts/` — administration, health-check, backup, and recovery scripts
 - `dotfiles/` — portable user configuration linked into the home directory
 - `inventory/` — hosts, storage, network, and service inventory
@@ -28,6 +28,25 @@ definitions, launchd jobs, inventory, runbooks, and machine-generated reports.
 - Servarr and supporting services, likely through OrbStack and Docker Compose
 - Health checks, alerting, logging, and agent-assisted remediation
 - Remote administration through Tailscale SSH, remote desktop, and JetKVM
+
+The planned component relationships, storage paths, request flow, networking,
+and operational model are documented in
+[`docs/media-server-architecture.md`](docs/media-server-architecture.md).
+
+## Configuration scopes
+
+The repository deliberately separates three kinds of configuration:
+
+- `Brewfile` describes the portable working environment that can be installed
+  on another development Mac.
+- `hosts/dylmini/Brewfile` describes native software installed because this Mac
+  is the homelab server. Host-specific launchd jobs live beside it.
+- `services/<name>/` contains Docker Compose definitions and non-secret service
+  configuration. Each stack is operated from its own directory rather than
+  from the repository root.
+
+Runtime databases, application state, downloads, and media do not live in this
+repository. Service documentation should point to their external locations.
 
 ## Bootstrap a Mac
 
