@@ -71,7 +71,7 @@ flowchart TB
         end
 
         agent["Health checks, logs, reports, and alerts"]
-        storage["External APFS media SSD\n/data/media + /data/downloads"]
+        storage["External APFS volume Media01\n/data/disk1/media + downloads"]
     end
 
     viewer --> ts
@@ -111,7 +111,7 @@ The external APFS volume is intended to expose one consistent data tree to the
 Mac and to every relevant container:
 
 ```text
-/Volumes/Media/data/
+/Volumes/Media01/data/
 ├── downloads/
 │   ├── torrents/
 │   │   ├── incomplete/
@@ -124,20 +124,68 @@ Mac and to every relevant container:
     └── tv/
 ```
 
-The Compose stack should mount `/Volumes/Media/data` as `/data` rather than
-giving each container unrelated host paths. Sonarr and Radarr then see the same
-paths as the download clients:
+The Compose stack should mount `/Volumes/Media01/data` as `/data/disk1` rather
+than giving each container unrelated host paths. Sonarr and Radarr then see the
+same paths as the download clients:
 
 ```text
-/data/downloads/torrents
-/data/downloads/usenet
-/data/media/movies
-/data/media/tv
+/data/disk1/downloads/torrents
+/data/disk1/downloads/usenet
+/data/disk1/media/movies
+/data/disk1/media/tv
+/data/disk1/media/anime
 ```
 
 This avoids remote-path mappings and permits atomic moves or hard links when
 the filesystem and client behavior allow them. Radarr and Sonarr own naming and
 library organization; download clients only populate the download directories.
+
+## Future storage expansion
+
+Storage should grow through independent, disk-aware APFS volumes rather than an
+opaque spanning pool. The first disk is named `Media01`; later disks follow the
+same structure:
+
+```text
+/Volumes/Media01/data/
+├── downloads/
+└── media/
+    ├── movies/
+    ├── tv/
+    └── anime/
+
+/Volumes/Media02/data/
+├── downloads/
+└── media/
+    ├── movies/
+    ├── tv/
+    └── anime/
+```
+
+Each volume is mounted separately in Compose:
+
+```text
+/Volumes/Media01/data  →  /data/disk1
+/Volumes/Media02/data  →  /data/disk2
+```
+
+Sonarr and Radarr support multiple root folders, so each series or movie lives
+entirely on one selected disk. Jellyfin can combine directories from multiple
+disks into a single user-facing Movies, Shows, or Anime library. Tdarr can apply
+the same policy to multiple physical libraries.
+
+Downloads should normally land on the same filesystem as their intended media
+root. Hard links cannot cross APFS volumes; a torrent downloaded on `Media01`
+and imported to `Media02` requires a full copy while the original remains for
+seeding. Disk-specific download categories or root selection can be introduced
+when a second disk is added. Cross-volume copies are less problematic for
+Usenet because completed downloads do not need to remain for seeding.
+
+Content migrations should be initiated through Sonarr or Radarr by changing a
+title's root folder, rather than moving managed files behind those applications.
+Monitoring should verify each disk by APFS volume UUID as well as its friendly
+name, free space, and mount path. A future NAS can be introduced as another
+root without changing the user-facing Jellyfin libraries.
 
 ## Request and import flow
 
@@ -146,9 +194,10 @@ library organization; download clients only populate the download directories.
    explicit root folder and quality profile.
 3. Sonarr or Radarr queries indexers through Prowlarr and sends the selected
    release to qBittorrent or SABnzbd.
-4. The download client writes into its section of `/data/downloads`.
+4. The download client writes into its section of `/data/disk1/downloads`.
 5. Sonarr or Radarr validates, renames, and imports the result into
-   `/data/media/tv` or `/data/media/movies`.
+   `/data/disk1/media/tv`, `/data/disk1/media/anime`, or
+   `/data/disk1/media/movies`.
 6. Native Jellyfin detects or scans the imported file and exposes it to users.
 7. Seerr synchronizes availability from Jellyfin and marks the request
    available.
@@ -198,4 +247,3 @@ Bitwarden or another designated secret store during provisioning; checked-in
 - Automatic remediation should begin with safe, bounded actions such as
   restarting a failed container. Storage, networking, media deletion, and
   access-control changes require explicit approval.
-
